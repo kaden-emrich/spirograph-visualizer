@@ -5,11 +5,43 @@ const ctx = canvas.getContext("2d");
 
 const stickCanvas = document.getElementById("stick-canvas");
 const stickCtx = stickCanvas.getContext("2d");
-stickCtx.lineWidth = 3;
+var stickWidth = 5;
+stickCtx.lineWidth = stickWidth;
 
 const progressBar = document.getElementById("progress-bar");
 
 const replayCheckbox = document.getElementById("replay-checkbox");
+const autoCheckbox = document.getElementById("auto-checkbox");
+const rainbowCheckbox = document.getElementById("rainbow-checkbox");
+
+const sliderBoost = document.getElementById("slider-boost");
+
+const sliderF1 = document.getElementById("slider-f1");
+const displayF1 = document.getElementById("display-f1");
+
+const sliderF2 = document.getElementById("slider-f2");
+const displayF2 = document.getElementById("display-f2");
+
+const sliderF3 = document.getElementById("slider-f3");
+const displayF3 = document.getElementById("display-f3");
+
+const size = 500;
+
+var autoDraw = true;
+
+function updateSize() {
+    canvas.width = size;
+    canvas.height = size;
+
+    stickCanvas.width = size;
+    stickCanvas.height = size;
+
+    document.getElementById("canvas-area").style.width = `${size}px`;
+    document.getElementById("canvas-area").style.height = `${size}px`;
+
+    document.getElementById("progress-area").style.width = `${size}px`;
+}
+updateSize();
 
 var mods = [
     [100, 10],
@@ -25,6 +57,11 @@ cool mods:
 ]
 
 [
+    [100, 50],
+    [50, -28]
+]
+
+[
     [100, 40],
     [50, -39],
     [25, 20]
@@ -36,13 +73,26 @@ cool mods:
 	[25, 13]
 ]
 
+[
+    [50, 13],
+    [100, 29]
+]
+
+[[125,40],[62.5,-20],[31.25,10]]
+
+[[125,40],[62.5,15],[31.25,-10]]
+
+[[125,40],[62.5,19],[31.25,-12]]
+
+[[125,15],[62.5,-14],[31.25,15]] logo
+
 */
 
 var lines = [];
 
-var doRainbow = true;
+var doRainbow = false;
 var penColor = "#ffffff";
-var stickColor = "#ffffff";
+// var stickColor = "#ffffff";
 
 var r1 = 100;
 var speed1 = 1;
@@ -84,27 +134,32 @@ function lcmArr(arr) {
 function updateVars() {
     // console.log('updating vars...'); // for debugging
     replay = replayCheckbox.checked;
+    autoDraw = autoCheckbox.checked;
+    doRainbow = rainbowCheckbox.checked;
+
+    boost = parseInt(sliderBoost.value);
+
+    displayF1.innerText = sliderF1.value;
+    displayF2.innerText = sliderF2.value;
+    displayF3.innerText = sliderF3.value;
+
+    mods = [];
+
+    if(sliderF1.value != 0) {
+        mods.push([size * 0.25, parseInt(sliderF1.value)]);
+    }
+    if(sliderF2.value != 0) {
+        mods.push([size * 0.125, parseInt(sliderF2.value)]);
+    }
+    if(sliderF3.value != 0) {
+        mods.push([size * 0.0625, parseInt(sliderF3.value)]);
+    }
+
+    if(autoDraw) {
+        clearCanvas();
+        quickDraw();
+    }
 }
-
-// function calculate0() {
-//     var centerX = canvas.width / 2;
-//     var centerY = canvas.height / 2;
-
-//     console.log(360 * speed2); // for debugging
-    
-//     points = [];
-//     for(let i = 0; i <= (360 * speed2); i++) {
-//         var x1 = centerX + Math.cos((i / speed1) * (Math.PI / 180)) * r1;
-//         var y1 = centerY + Math.sin((i / speed1) * (Math.PI / 180)) * r1;
-
-//         var x2 = x1 + Math.cos((i / speed2) * (Math.PI / 180)) * r2;
-//         var y2 = y1 + Math.sin((i / speed2) * (Math.PI / 180)) * r2;
-
-//         // console.log(`(${x2}, ${y2})`); // for debugging
-
-//         points.push([x2, y2]);
-//     }
-// }
 
 function calculate() {
     var centerX = canvas.width / 2;
@@ -130,8 +185,11 @@ function calculate() {
         nextLines.push([lastX, lastY]);
 
         for(let j = 0; j < mods.length; j++) {
-            lastX = lastX + Math.cos((i / mods[j][1]) * (Math.PI / 180)) * mods[j][0];
-            lastY = lastY + Math.sin((i / mods[j][1]) * (Math.PI / 180)) * mods[j][0];
+
+            if(mods[j][1] != 0) {
+                lastX = lastX + Math.cos((i / mods[j][1]) * (Math.PI / 180)) * mods[j][0];
+                lastY = lastY + Math.sin((i / mods[j][1]) * (Math.PI / 180)) * mods[j][0];
+            }
 
             nextLines.push([lastX, lastY]);
         }
@@ -195,12 +253,18 @@ function draw() {
             stickCtx.clearRect(0, 0, stickCanvas.width, stickCanvas.height);
 
             stickCtx.beginPath();
-            stickCtx.moveTo(lines[index][0][0], lines[index][0][1]);
+            // stickCtx.moveTo(lines[index][0][0], lines[index][0][1]);
             for(let j = 1; j < lines[index].length; j++) {
+                stickCtx.strokeStyle = `hsl(${j / lines[index].length * 360} 100% 50%)`;
+                stickCtx.lineWidth = stickWidth;
+                stickCtx.beginPath();
+                stickCtx.moveTo(lines[index][j-1][0], lines[index][j-1][1]);
                 stickCtx.lineTo(lines[index][j][0], lines[index][j][1]);
+
+                stickCtx.stroke();
             }
-            stickCtx.strokeStyle = stickColor;
-            stickCtx.stroke();
+            // stickCtx.strokeStyle = stickColor;
+            
         }
 
         var progress = Math.floor(100 * index / points.length);
@@ -217,3 +281,48 @@ function draw() {
         }
     }, 1000/60);
 }
+
+function quickDraw() {
+    calculate();
+    var index = 0;
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let i = 0; i < points.length; i++) {
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if(doRainbow) {
+            ctx.strokeStyle = `hsl(${i / points.length * 360} 100% 50%)`;  
+        }
+        else {
+            ctx.strokeStyle = penColor;
+        }
+
+        ctx.lineWidth = 10; // for debugging
+
+        if(i == 0) {    
+            ctx.beginPath();
+            ctx.moveTo(points[i][0], points[i][1]);
+        }
+        else {
+            ctx.beginPath();
+            ctx.moveTo(points[i - 1][0], points[i - 1][1]);
+            ctx.lineTo(points[i][0], points[i][1]);
+        }
+
+        ctx.stroke();
+    }
+}
+
+function saveImage() {
+    var image = canvas.toDataURL("image/png");
+    window.open(image);
+}
+
+function printMods() {
+    console.log((JSON.stringify(mods)));
+}
+
+function init() {
+    updateVars();
+}
+
+init();

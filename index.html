@@ -20,9 +20,10 @@
             <div id="progress-bar"></div>
         </div>
 
-        <br>
+        <br> 
 
         <button onclick="draw()">draw</button>
+        <button onclick="quickDraw()">quick draw</button>
         <button onclick="stop()">stop</button>
         <button onclick="clearCanvas()">clear</button>
 
@@ -33,6 +34,45 @@
 
         <br>
 
+        <label for="auto-checkbox">auto</label>
+        <input id="auto-checkbox" type="checkbox" oninput="updateVars()">
+        
+        <br>
+
+        <label for="rainbow-checkbox">rainbow</label>
+        <input id="rainbow-checkbox" type="checkbox" oninput="updateVars()">
+
+        <br><br>
+
+        <div id="slider-area">
+
+            <label for="slider-boost">speed</label>
+            <br>
+            <input type="range" min="100" max="1000" value="-9" class="slider" id="slider-boost" oninput="updateVars()">
+
+            <br>
+
+            <label for="slider-f1">Value: <span id="display-f1">0</span></label>
+            <br>
+            <input type="range" min="-50" max="50" value="1" class="slider" id="slider-f1" oninput="updateVars()">
+
+            <br>
+
+            <label for="slider-f2">Value: <span id="display-f2">0</span></label>
+            <br>
+            <input type="range" min="-50" max="50" value="0" class="slider" id="slider-f2" oninput="updateVars()">
+
+            <br>
+
+            <label for="slider-f3">Value: <span id="display-f3">0</span></label>
+            <br>
+            <input type="range" min="-50" max="50" value="0" class="slider" id="slider-f3" oninput="updateVars()">
+        </div>
+
+        <button onclick="saveImage()">save</button>
+
+        <br><br>
+        <button onclick="printMods()">debug</button>
 
     </main>
 </body>
