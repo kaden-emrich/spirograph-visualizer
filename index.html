@@ -12,7 +12,24 @@
 <body>
     <main>
         <canvas id="main-canvas" width="400px" height="400px"></canvas>
+        <div id="progress-area">
+            <div id="progress-bar"></div>
+        </div>
+
+        <br>
+
         <button onclick="draw()">draw</button>
+        <button onclick="stop()">stop</button>
+        <button onclick="clearCanvas()">clear</button>
+
+        <br>
+
+        <label for="replay-checkbox">replay</label>
+        <input id="replay-checkbox" type="checkbox" oninput="updateVars()">
+
+        <br>
+
+
     </main>
 </body>
 </html>

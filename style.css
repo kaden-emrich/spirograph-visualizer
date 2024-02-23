@@ -4,5 +4,19 @@ body {
 }
 
 #main-canvas {
-    border: 1px solid black;
+    /* border: 1px solid gray; */
+    background-color: black;
+}
+
+#progress-area {
+    position: relative;
+    width: 400px;
+    height: 20px;
+    border: 1px solid gray;
+}
+#progress-bar {
+    position: relative;
+    height: 100%;
+    width: 0%;
+    background-color: green;
 }
