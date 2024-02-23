@@ -12,9 +12,31 @@ const progressBar = document.getElementById("progress-bar");
 const replayCheckbox = document.getElementById("replay-checkbox");
 
 var mods = [
-    [100, 1],
-    [40, 30]
+    [100, 10],
+    [40, -9]
 ];
+
+/*
+
+cool mods:
+[
+    [100, 40],
+    [50, -39]
+]
+
+[
+    [100, 40],
+    [50, -39],
+    [25, 20]
+]
+
+[
+    [100, 40],
+	[50, -39],
+	[25, 13]
+]
+
+*/
 
 var lines = [];
 
@@ -28,7 +50,7 @@ var speed1 = 1;
 var r2 = 40;
 var speed2 = 30;
 
-var boost = 50;
+var boost = 100;
 
 var replay = false;
 
@@ -92,7 +114,7 @@ function calculate() {
 
     var speeds = [];
     for(let m = 0; m < mods.length; m++) {
-        speeds.push(mods[m][1]);
+        speeds.push(Math.abs(mods[m][1]));
     }
 
     var items = lcmArr(speeds) * 360;
