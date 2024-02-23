@@ -3,6 +3,10 @@
 const canvas = document.getElementById("main-canvas");
 const ctx = canvas.getContext("2d");
 
+const stickCanvas = document.getElementById("stick-canvas");
+const stickCtx = stickCanvas.getContext("2d");
+stickCtx.lineWidth = 3;
+
 const progressBar = document.getElementById("progress-bar");
 
 const replayCheckbox = document.getElementById("replay-checkbox");
@@ -123,6 +127,7 @@ function stop() {
 function clearCanvas() {
     // console.log('clearing...'); // for debugging
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stickCtx.clearRect(0, 0, stickCanvas.width, stickCanvas.height);
     progressBar.style.width = `0%`;
 }
 
@@ -136,15 +141,14 @@ function draw() {
 
     var displayedProgress = 0;
     progressBar.style.width = `${displayedProgress}%`;
-    ctx.save();
 
     drawInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for(let i = 0; i < index + boost && i < points.length; i++) {
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for(let i = index; i < index + boost && i < points.length; i++) {
             // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             if(doRainbow) {
-                ctx.strokeStyle = `hsl(${index / points.length * 360} 100% 50%)`;  
+                ctx.strokeStyle = `hsl(${i / points.length * 360} 100% 50%)`;  
             }
             else {
                 ctx.strokeStyle = penColor;
@@ -162,6 +166,20 @@ function draw() {
 
             ctx.stroke();
         }
+        
+        index += boost;
+
+        if(index < points.length) {
+            stickCtx.clearRect(0, 0, stickCanvas.width, stickCanvas.height);
+
+            stickCtx.beginPath();
+            stickCtx.moveTo(lines[index][0][0], lines[index][0][1]);
+            for(let j = 1; j < lines[index].length; j++) {
+                stickCtx.lineTo(lines[index][j][0], lines[index][j][1]);
+            }
+            stickCtx.strokeStyle = stickColor;
+            stickCtx.stroke();
+        }
 
         var progress = Math.floor(100 * index / points.length);
         if(progress > displayedProgress) {
@@ -169,21 +187,11 @@ function draw() {
             progressBar.style.width = `${displayedProgress}%`;
         }
 
-        if(index < points.length) {
-            ctx.moveTo(lines[index][0][0], lines[index][0][1]);
-            for(let j = 1; j < lines[index].length; j++) {
-                ctx.lineTo(lines[index][j][0], lines[index][j][1]);
-            }
-            ctx.strokeStyle = stickColor;
-            ctx.stroke();
-        }
-
         if(index >= points.length) {
+            stickCtx.clearRect(0, 0, stickCanvas.width, stickCanvas.height);
             clearInterval(drawInterval);
 
             if(replay) draw();
         }
-
-        index += boost;
     }, 1000/60);
 }

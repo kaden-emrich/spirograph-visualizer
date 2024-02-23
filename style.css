@@ -3,13 +3,25 @@ body {
     padding: 0;
 }
 
+#canvas-area {
+    width: 400px;
+    height: 400px;
+}
+#canvas-area canvas {
+    position: absolute;
+}
+
 #main-canvas {
     /* border: 1px solid gray; */
     background-color: black;
 }
+#stick-canvas {
+    /* display: none; */
+}
 
 #progress-area {
     position: relative;
+    box-sizing: border-box;
     width: 400px;
     height: 20px;
     border: 1px solid gray;
