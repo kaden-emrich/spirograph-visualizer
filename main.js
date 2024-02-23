@@ -296,7 +296,7 @@ function quickDraw() {
             ctx.strokeStyle = penColor;
         }
 
-        ctx.lineWidth = 10; // for debugging
+        // ctx.lineWidth = 10; // for debugging
 
         if(i == 0) {    
             ctx.beginPath();
