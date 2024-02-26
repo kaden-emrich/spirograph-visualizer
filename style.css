@@ -1,7 +1,16 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: gray;
+    background-color: black;
+
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
 }
 
 #canvas-area {
@@ -19,6 +28,24 @@ body {
 }
 #stick-canvas {
     /* display: none; */
+    pointer-events: none;
+}
+
+#background-canvas {
+    position: absolute;
+    overflow: hidden;
+    width: 200%;
+    /* height: 100%; */
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: -1;
+    
+    filter: blur(10px) brightness(50%);
+    
     pointer-events: none;
 }
 
@@ -43,9 +70,9 @@ body {
 #flex-area {
     display: flex;
     gap: 50px;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: rgba(60,60,60,0.9);
 }
 #controls-area {
 

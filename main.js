@@ -8,6 +8,9 @@ const stickCtx = stickCanvas.getContext("2d");
 var stickWidth = 5;
 stickCtx.lineWidth = stickWidth;
 
+const backgroundCanvas = document.getElementById("background-canvas");
+const backgroundCtx = backgroundCanvas.getContext('2d');
+
 const progressBar = document.getElementById("progress-bar");
 
 const replayCheckbox = document.getElementById("replay-checkbox");
@@ -35,6 +38,9 @@ function updateSize() {
 
     stickCanvas.width = size;
     stickCanvas.height = size;
+
+    backgroundCanvas.width = size;
+    backgroundCanvas.height = size;
 
     document.getElementById("canvas-area").style.width = `${size}px`;
     document.getElementById("canvas-area").style.height = `${size}px`;
@@ -328,6 +334,12 @@ function printMods() {
 
 function init() {
     updateVars();
+
+    setInterval(() => {
+        backgroundCtx.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+
+        backgroundCtx.drawImage(canvas, 0, 0);
+    }, 1000 / 60);
 }
 
 init();
