@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: gray;
 }
 
 #canvas-area {
@@ -14,6 +15,7 @@ body {
 #main-canvas {
     /* border: 1px solid gray; */
     background-color: black;
+    border-radius: 50%;
 }
 #stick-canvas {
     /* display: none; */
@@ -25,11 +27,26 @@ body {
     box-sizing: border-box;
     width: 400px;
     height: 20px;
-    border: 1px solid gray;
+    border: 1px solid black;
 }
 #progress-bar {
     position: relative;
     height: 100%;
     width: 0%;
     background-color: green;
+}
+
+#tip-area {
+    text-align: center;
+}
+
+#flex-area {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+#controls-area {
+
 }
