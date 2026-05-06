@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <script src="main.js" defer></script>
 </head>
 <body>
     <canvas id="background-canvas" width="400px" height="400px"></canvas>
@@ -33,6 +32,7 @@
                 <button onclick="quickDraw()">quick draw</button>
                 <button onclick="stop()">stop</button>
                 <button onclick="clearCanvas()">clear</button>
+                <button onclick="drawRandom()">random</button>
 
                 <br>
 
@@ -76,13 +76,34 @@
                     <input type="range" min="-50" max="50" value="0" class="slider" id="slider-f3" oninput="updateVars()">
                 </div>
 
+
                 <!-- <button onclick="saveImage()">save</button> -->
 
-                <br><br>
+                <br>
+                <span id="override-area"></span>
+                <br>
+                <br>
                 <button onclick="printMods()">debug</button>
 
             </div>
         </div>
     </main>
 </body>
+<script src="main.js" defer></script>
+
+<script defer>
+var backgroundMode = false;
+
+var urlParams = new URLSearchParams(window.location.search);
+function importUrlParams() {
+    if(urlParams.get('background') == 'true') {
+        backgroundMode = true;
+        document.getElementsByTagName('main')[0].style.display = "none";
+        // document.getElementById("background-canvas").style.filter = "none";
+    }
+}
+importUrlParams();
+
+</script>
+
 </html>

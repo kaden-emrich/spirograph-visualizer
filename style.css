@@ -3,6 +3,7 @@ body {
     padding: 0;
     background-color: black;
 
+    font-family: monospace;
     overflow: hidden;
 }
 
@@ -25,16 +26,21 @@ main {
     /* border: 1px solid gray; */
     background-color: black;
     border-radius: 50%;
+    width: 400px;
+    height: 400px;
 }
 #stick-canvas {
     /* display: none; */
     pointer-events: none;
+    width: 400px;
+    height: 400px;
 }
 
 #background-canvas {
     position: absolute;
     overflow: hidden;
-    width: 200%;
+    min-width: 110%;
+    min-height: 110%;
     /* height: 100%; */
 
     top: 50%;
@@ -44,7 +50,7 @@ main {
 
     z-index: -1;
     
-    filter: blur(10px) brightness(50%);
+    filter: blur(10px) brightness(100%);
     
     pointer-events: none;
 }
